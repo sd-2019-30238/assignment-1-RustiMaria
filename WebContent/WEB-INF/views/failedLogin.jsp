@@ -2,13 +2,13 @@
 <html>
    <head>
       <meta charset="UTF-8">
-      <title>User Info</title>
+      <title>Error</title>
    </head>
    <body>
  
      <jsp:include page="_menu.jsp"></jsp:include>
  
-      <h3>Hello, ${logedInUser.username}</h3>
+      <h3>${errorMessage}</h3>
  
       <br /> 
  

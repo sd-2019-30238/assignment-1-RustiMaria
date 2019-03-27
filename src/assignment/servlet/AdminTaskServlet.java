@@ -18,20 +18,17 @@ public class AdminTaskServlet extends HttpServlet {
    }
  
    @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-         throws ServletException, IOException {
+   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
  
-      RequestDispatcher dispatcher //
-            = this.getServletContext()//
-                  .getRequestDispatcher("/WEB-INF/views/adminTaskView.jsp");
+      RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/adminTaskView.jsp");
  
       dispatcher.forward(request, response);
    }
  
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-         throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
  
       doGet(request, response);
+      
    }
 }

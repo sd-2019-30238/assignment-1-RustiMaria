@@ -9,6 +9,7 @@ import java.util.Set;
 public class SecurityConfiguration {
 
 	public static final String ROLE_ADMIN = "ADMIN";
+	public static final String ROLE_USER = "USER";
 
 	private static final Map<String, List<String>> mapConfig = new HashMap<String, List<String>>();
 
@@ -19,12 +20,19 @@ public class SecurityConfiguration {
 	private static void init() {
 
 		// Configure For "ADMIN" Role.
-		List<String> urlPatterns = new ArrayList<String>();
+		List<String> urlPatterns1 = new ArrayList<String>();
 
-		urlPatterns.add("/userInfo");
-		urlPatterns.add("/adminTask");
+		urlPatterns1.add("/userInfo");
+		urlPatterns1.add("/adminTask");
 
-		mapConfig.put(ROLE_ADMIN, urlPatterns);
+		mapConfig.put(ROLE_ADMIN, urlPatterns1);
+
+		// Configure For "USER" Role.
+		List<String> urlPatterns2 = new ArrayList<String>();
+
+		urlPatterns2.add("/userInfo");
+		
+		mapConfig.put(ROLE_USER, urlPatterns2);
 
 	}
 

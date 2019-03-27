@@ -30,8 +30,8 @@ public class SecurityFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+		
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 
@@ -39,7 +39,7 @@ public class SecurityFilter implements Filter {
 
 		// User information stored in the Session.
 		// (After successful login).
-		User loginedUser = assignment.utils.AppUtils.getLoginedUser(request.getSession());
+		User logedInUser = assignment.utils.AppUtils.getLogedInUser(request.getSession());
 
 		if (servletPath.equals("/login")) {
 			chain.doFilter(request, response);
@@ -47,12 +47,12 @@ public class SecurityFilter implements Filter {
 		}
 		HttpServletRequest wrapRequest = request;
 
-		if (loginedUser != null) {
+		if (logedInUser != null) {
 			// User Name
-			String username = loginedUser.getUsername();
+			String username = logedInUser.getUsername();
 
 			// Roles
-			String role = loginedUser.getRole();
+			String role = logedInUser.getRole();
 
 			// Wrap old request by a new Request with userName and Roles information.
 			wrapRequest = new UserRoleRequest(username, role, request);
@@ -63,7 +63,7 @@ public class SecurityFilter implements Filter {
 
 			// If the user is not logged in,
 			// Redirect to the login page.
-			if (loginedUser == null) {
+			if (logedInUser == null) {
 
 				String requestUri = request.getRequestURI();
 
@@ -78,8 +78,7 @@ public class SecurityFilter implements Filter {
 			boolean hasPermission = SecurityUtils.hasPermission(wrapRequest);
 			if (!hasPermission) {
 
-				RequestDispatcher dispatcher //
-				= request.getServletContext().getRequestDispatcher("/WEB-INF/views/accessDeniedView.jsp");
+				RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/accessDeniedView.jsp");
 
 				dispatcher.forward(request, response);
 				return;
@@ -90,7 +89,5 @@ public class SecurityFilter implements Filter {
 	}
 
 	@Override
-	public void init(FilterConfig fConfig) throws ServletException {
-
-	}
+	public void init(FilterConfig fConfig) throws ServletException {}
 }

@@ -12,24 +12,9 @@ import assignment.configuration.SecurityConfiguration;
 
 public class UserDAO {
 
-	private static final Map<String, User> mapUsers = new HashMap<String, User>();
-
-	static {
-		initUsers();
-	}
-
-	private static void initUsers() {
-
-		// This user has a role as ADMIN.
-		User admin = new User(1, "admin", "admin", "", "", "", SecurityConfiguration.ROLE_ADMIN);
-
-		mapUsers.put(admin.getUsername(), admin);
-
-	}
-
 	public static User findUser(Connection conn, String username, String password) throws SQLException {
 
-		String sql = "select u.id, u.username, u.email, u.address, u.phone from user u " //
+		String sql = "select u.id, u.username from user u " //
 				+ " where u.username = ? and u.password= ?";
 
 		PreparedStatement pstm = conn.prepareStatement(sql);
@@ -37,12 +22,16 @@ public class UserDAO {
 		pstm.setString(2, password);
 		ResultSet rs = pstm.executeQuery();
 
+		User user = new User();
+		
 		if (rs.next()) {
 			int id = rs.getInt("id");
-			String email = rs.getString("email");
-			String address = rs.getString("address");
-			String phone = rs.getString("phone");
-			User user = new User(id, username, password, email, address, phone, "");
+			if(!username.equals("admin") && !password.equals("admin")) {
+				user = new User(id, username, password, SecurityConfiguration.ROLE_USER);
+			}
+			else {
+				user = new User(id, username, password, SecurityConfiguration.ROLE_ADMIN);
+			}
 			return user;
 		}
 		return null;
@@ -50,7 +39,7 @@ public class UserDAO {
 
 	public static User findUser(Connection conn, String username) throws SQLException {
 
-		String sql ="select u.id, u.username, u.password, u.email, u.address, u.phone from user u " //
+		String sql ="select u.id, u.username, u.password from user u " //
 				+ " where u.username = ?";
 
 		PreparedStatement pstm = conn.prepareStatement(sql);
@@ -60,11 +49,8 @@ public class UserDAO {
 
 		if (rs.next()) {
 			int id = rs.getInt("id");
-			String email = rs.getString("email");
-			String address = rs.getString("address");
 			String password = rs.getString("password");
-			String phone = rs.getString("phone");
-			User user = new User(id, username, password, email, address, phone, "");
+			User user = new User(id, username, password, "");
 			return user;
 		}
 		return null;
@@ -72,18 +58,13 @@ public class UserDAO {
 	
 	public static void insertUser(Connection conn, User user) throws SQLException {
 
-		String sql ="insert into user(id, username, password, email, address, phone, role) values (?,?,?,?,?,?,?)";
+		String sql ="insert into user(username, password, role) values (?,?,\"USER\")";
 
 		PreparedStatement pstm = conn.prepareStatement(sql);
-		pstm.setInt(1, user.getId());
-		pstm.setString(2, user.getUsername());
-		pstm.setString(3, user.getPassword());
-		pstm.setString(4, user.getEmail());
-		pstm.setString(5, user.getAddress());
-		pstm.setString(6, user.getPhone());
-		pstm.setString(7, user.getRole());
+		pstm.setString(1, user.getUsername());
+		pstm.setString(2, user.getPassword());
 
-		pstm.executeQuery();
+		pstm.executeUpdate();
 
 	}
 	

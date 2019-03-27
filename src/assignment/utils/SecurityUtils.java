@@ -24,7 +24,7 @@ public class SecurityUtils {
 		return false;
 	}
 
-	// Check if this 'request' has a 'valid role'?
+	// Check if this 'request' has a 'valid role'
 	public static boolean hasPermission(HttpServletRequest request) {
 		String urlPattern = UrlPatternUtils.getUrlPattern(request);
 

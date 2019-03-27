@@ -13,26 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.User;
 import assignment.connection.ConnectionUtils;
-import assignment.utils.AppUtils;
 import assignment.utils.UserDAO;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/admin")
+public class AdminLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	Connection connection;
 	
-	public LoginServlet() {
+	public AdminLoginServlet() {
 		super();
 		try {
 			connection = ConnectionUtils.getConnection();
 		} catch(Exception e) {}
-	}
+	}	
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/adminLoginView.jsp");
 
 		dispatcher.forward(request, response);
 	}
@@ -44,38 +43,24 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		User userAccount = null;
 		try {
-			System.out.println("1");
 			userAccount = UserDAO.findUser(connection, username, password);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
-		if (userAccount == null) {
-			String errorMessage = "Invalid username or password";
+		if (userAccount == null || userAccount.getRole().equals("USER")) {
+			String errorMessage = "Invalid admin credentials";
 			request.setAttribute("errorMessage", errorMessage);
-
-			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/failedLogin.jsp");
+			System.out.println("admin" + userAccount.getUsername() + " " + userAccount.getPassword() + " " + userAccount.getRole());
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/accessDeniedView.jsp");
 
 			dispatcher.forward(request, response);
 			return;
 		}
 
-		AppUtils.storeLogedInUser(request.getSession(), userAccount);
+		assignment.utils.AppUtils.storeLogedInUser(request.getSession(), userAccount);
 
-		int redirectId = -1;
-		try {
-			redirectId = Integer.parseInt(request.getParameter("redirectId"));
-		} catch (Exception e) {
-		}
-		String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
-		if (requestUri != null) {
-			response.sendRedirect(requestUri);
-		} else {
-			// Default after successful login
-			// redirect to /userInfo page
-			response.sendRedirect(request.getContextPath() + "/userInfo");
-		}
+		response.sendRedirect(request.getContextPath() + "/adminTask");
 
 	}
-
 }
