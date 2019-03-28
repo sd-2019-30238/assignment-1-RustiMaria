@@ -23,7 +23,7 @@ public class ListProductsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	Connection connection;
-	
+
 	public ListProductsServlet() {
 		super();
 		try {
@@ -31,18 +31,18 @@ public class ListProductsServlet extends HttpServlet {
 		} catch(Exception e) {}
 	}
 
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-List<Product> products = new ArrayList<Product>();
-		
+		List<Product> products = new ArrayList<Product>();
+
 		try {
 			products = ProductDAO.queryProduct(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		request.setAttribute("products", products);
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/listProductsView.jsp");
 
@@ -53,13 +53,13 @@ List<Product> products = new ArrayList<Product>();
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		List<Product> products = new ArrayList<Product>();
-		
+
 		try {
 			products = ProductDAO.queryProduct(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		request.setAttribute("products", products);
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/listProductsView.jsp");
 

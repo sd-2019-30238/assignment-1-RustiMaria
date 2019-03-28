@@ -17,30 +17,33 @@
 		<table border="0">
 			<tr>
 				<td>First Name</td>
-				<td><input type="text" name="firstName" value="${client.firstName}" />
+				<td><input type="text" name="firstName" value="${client.firstName}" required/>
 				</td>
 			</tr>
 			<tr>
 				<td>Last Name</td>
-				<td><input type="text" name="lastName" value="${client.lastName}" /></td>
+				<td><input type="text" name="lastName" value="${client.lastName}" required/></td>
 			</tr>
 			<tr>
 				<td>Address</td>
-				<td><input type="text" name="address" value="${client.address}" />
+				<td><input type="text" name="address" value="${client.address}" required/>
 				</td>
 			</tr>
 			<tr>
 				<td>Email</td>
-				<td><input type="text" name="email" value="${client.email}" /></td>
+				<td><input type="text" name="email" value="${client.email}" 
+				pattern="[a-zA-Z0-9!#$%&amp;'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*"
+				required/>
+				</td>
 			</tr>
 			<tr>
 				<td>Username</td>
-				<td><input type="text" name="username" value="${user.username}" />
+				<td><input type="text" name="username" value="${user.username}" required/>
 				</td>
 			</tr>
 			<tr>
 				<td>Password</td>
-				<td><input type="password" name="password" value="${user.password}" /></td>
+				<td><input type="password" name="password" value="${user.password}" required/></td>
 			</tr>
 
 			<tr>
