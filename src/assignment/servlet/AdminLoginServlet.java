@@ -51,7 +51,6 @@ public class AdminLoginServlet extends HttpServlet {
 		if (userAccount == null || userAccount.getRole().equals("USER")) {
 			String errorMessage = "Invalid admin credentials";
 			request.setAttribute("errorMessage", errorMessage);
-			System.out.println("admin" + userAccount.getUsername() + " " + userAccount.getPassword() + " " + userAccount.getRole());
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/accessDeniedView.jsp");
 
 			dispatcher.forward(request, response);

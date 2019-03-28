@@ -5,7 +5,7 @@
       <title>Admin Task</title>
    </head>
     
-   <body>
+   <body style="background-color:LightGray;">
     
       <jsp:include page="_menu.jsp"></jsp:include>
        

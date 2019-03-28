@@ -4,7 +4,7 @@
       <meta charset="UTF-8">
       <title>Error</title>
    </head>
-   <body>
+   <body style="background-color:LightGray;">
  
      <jsp:include page="_menu.jsp"></jsp:include>
  
