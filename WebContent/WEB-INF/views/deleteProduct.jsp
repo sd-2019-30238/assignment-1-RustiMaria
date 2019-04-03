@@ -13,24 +13,11 @@
 
 		<table border="0">
 			<tr>
-				<td>The id of the product you want to update:</td>
+				<td>The id of the product you want to delete:</td>
 				<td><input type="text" name="idProduct"></td>
 			</tr>
 			<tr>
-				<td>The field you want to update:</td>
-				<td><select name = "field">
-					<option value="name" selected>Name</option>
-					<option value="price">Price</option>
-					<option value="quantity">Quantity</option>
-					<option value="discountId">Discount</option>
-					</select></td>
-			</tr>
-				<tr>
-					<td>New value:</td>
-					<td><input type="text" name="newValue"></td>
-				</tr>
-			<tr>
-				<td colspan="2"><input type="submit" name="updateProduct" value="Update">
+				<td colspan="2"><input type="submit" name="deleteProduct" value="Delete">
 				</td>
 			</tr>
 		</table>

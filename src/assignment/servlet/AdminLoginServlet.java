@@ -18,14 +18,9 @@ import assignment.utils.UserDAO;
 @WebServlet("/admin")
 public class AdminLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	Connection connection;
 	
 	public AdminLoginServlet() {
 		super();
-		try {
-			connection = ConnectionUtils.getConnection();
-		} catch(Exception e) {}
 	}	
 
 	@Override
@@ -43,7 +38,7 @@ public class AdminLoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		User userAccount = null;
 		try {
-			userAccount = UserDAO.findUser(connection, username, password);
+			userAccount = UserDAO.findUser(username, password);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -57,7 +52,7 @@ public class AdminLoginServlet extends HttpServlet {
 			return;
 		}
 
-		assignment.utils.AppUtils.storeLogedInUser(request.getSession(), userAccount);
+		assignment.utils.AppUtils.storeLoggedInUser(request.getSession(), userAccount);
 
 		response.sendRedirect(request.getContextPath() + "/adminTask");
 

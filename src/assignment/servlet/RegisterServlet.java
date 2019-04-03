@@ -23,13 +23,8 @@ public class RegisterServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
-	Connection connection;
-	
 	public RegisterServlet() {
 		super();
-		try {
-			connection = ConnectionUtils.getConnection();
-		} catch(Exception e) {}
 	}
 	
 	@Override
@@ -54,16 +49,17 @@ public class RegisterServlet extends HttpServlet {
 		User newUser = new User(username, password, "USER");
 		
 		try {
-			UserDAO.insertUser(connection, newUser);
-			User user = UserDAO.findUser(connection, newUser.getUsername(), newUser.getPassword());
+			UserDAO.insertUser(newUser);
+			User user = UserDAO.findUser(newUser.getUsername(), newUser.getPassword());
 			newClient.setId(user.getId());
-			ClientDAO.insertClient(connection, newClient);
+			ClientDAO.insertClient(newClient);
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/registerSuccess.jsp");
+			dispatcher.forward(request, response);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		AppUtils.storeLogedInUser(request.getSession(), newUser);
-		response.sendRedirect(request.getContextPath() + "/registerSuccess.jsp");
+		//AppUtils.storeLogedInUser(request.getSession(), newUser);
 	}
 	
 }

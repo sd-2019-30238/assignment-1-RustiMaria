@@ -9,14 +9,22 @@ import java.util.Map;
 
 import assignment.beans.User;
 import assignment.configuration.SecurityConfiguration;
+import assignment.connection.ConnectionUtils;
 
 public class UserDAO {
 
-	public static User findUser(Connection conn, String username, String password) throws SQLException {
+	public static User findUser(String username, String password) throws SQLException {
 
 		String sql = "select u.id, u.username from user u " //
 				+ " where u.username = ? and u.password= ?";
 
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, username);
 		pstm.setString(2, password);
@@ -37,11 +45,18 @@ public class UserDAO {
 		return null;
 	}
 
-	public static User findUser(Connection conn, String username) throws SQLException {
+	public static User findUser(String username) throws SQLException {
 
 		String sql ="select u.id, u.username, u.password from user u " //
 				+ " where u.username = ?";
 
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, username);
 
@@ -56,10 +71,17 @@ public class UserDAO {
 		return null;
 	}
 	
-	public static void insertUser(Connection conn, User user) throws SQLException {
+	public static void insertUser(User user) throws SQLException {
 
 		String sql ="insert into user(username, password, role) values (?,?,\"USER\")";
 
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setString(1, user.getUsername());
 		pstm.setString(2, user.getPassword());

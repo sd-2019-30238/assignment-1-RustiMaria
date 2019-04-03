@@ -21,15 +21,10 @@
 	<br>
 
 	<form method="POST" action="${pageContext.request.contextPath}/adminTask">
-
-	<a href="${pageContext.request.contextPath}/tasks" class="btn btn-info" role="button">Add Product</a>
-	<a href="${pageContext.request.contextPath}/tasks" class="btn btn-info" role="button">Update Product</a>
-	<a href="${pageContext.request.contextPath}/tasks" class="btn btn-info" role="button">Delete Product</a>
-	<a href="${pageContext.request.contextPath}/tasks" class="btn btn-info" role="button">Add Discount</a>
-	<a href="${pageContext.request.contextPath}/tasks" class="btn btn-info" role="button">Update Discount</a>
 	
 	<input type="submit" name="add" value="Add Product">
 	<input type="submit" name="update" value="Update Product">
+	<input type="submit" name="delete" value="Delete Product">
 	
 	</form>
 

@@ -39,7 +39,7 @@ public class SecurityFilter implements Filter {
 
 		// User information stored in the Session.
 		// (After successful login).
-		User logedInUser = assignment.utils.AppUtils.getLogedInUser(request.getSession());
+		User loggedInUser = assignment.utils.AppUtils.getLoggedInUser(request.getSession());
 
 		if (servletPath.equals("/login")) {
 			chain.doFilter(request, response);
@@ -47,12 +47,12 @@ public class SecurityFilter implements Filter {
 		}
 		HttpServletRequest wrapRequest = request;
 
-		if (logedInUser != null) {
+		if (loggedInUser != null) {
 			// User Name
-			String username = logedInUser.getUsername();
+			String username = loggedInUser.getUsername();
 
 			// Roles
-			String role = logedInUser.getRole();
+			String role = loggedInUser.getRole();
 
 			// Wrap old request by a new Request with userName and Roles information.
 			wrapRequest = new UserRoleRequest(username, role, request);
@@ -63,7 +63,7 @@ public class SecurityFilter implements Filter {
 
 			// If the user is not logged in,
 			// Redirect to the login page.
-			if (logedInUser == null) {
+			if (loggedInUser == null) {
 
 				String requestUri = request.getRequestURI();
 

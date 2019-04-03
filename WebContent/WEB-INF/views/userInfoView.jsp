@@ -8,7 +8,7 @@
  
      <jsp:include page="_menu.jsp"></jsp:include>
  
-      <h3>Hello, ${logedInUser.username}</h3>
+      <h3>Hello, ${loggedInUser.username}</h3>
  
       <br /> 
  

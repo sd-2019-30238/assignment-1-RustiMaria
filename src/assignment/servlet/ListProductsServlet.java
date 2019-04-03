@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -14,7 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.Product;
+import assignment.beans.factory.HolidayDiscount;
+import assignment.beans.factory.SeasonDiscount;
+import assignment.beans.factory.TenPercentDiscount;
 import assignment.connection.ConnectionUtils;
+import assignment.utils.DiscountDAO;
 import assignment.utils.ProductDAO;
 
 @WebServlet("/listProducts")
@@ -22,13 +27,8 @@ public class ListProductsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	Connection connection;
-
 	public ListProductsServlet() {
 		super();
-		try {
-			connection = ConnectionUtils.getConnection();
-		} catch(Exception e) {}
 	}
 
 
@@ -38,7 +38,12 @@ public class ListProductsServlet extends HttpServlet {
 		List<Product> products = new ArrayList<Product>();
 
 		try {
-			products = ProductDAO.queryProduct(connection);
+			products = ProductDAO.queryProduct();
+			for(Product p: products) {
+				int code = p.getDiscountId();
+				float percent = DiscountDAO.findDiscountByCode(code);
+				p.setDiscountId((int)percent);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -52,18 +57,49 @@ public class ListProductsServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		List<Product> products = new ArrayList<Product>();
+		if(request.getParameter("filter") != null) {
 
-		try {
-			products = ProductDAO.queryProduct(connection);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			List<Product> products = new ArrayList<Product>();
+			String type = request.getParameter("type");
+			System.out.println(type);
+			try {
+				switch(type) {
+				case "priceUp": products = ProductDAO.orderedProductsByPrice();
+								System.out.println("here");
+								break;
+				case "priceDown": products = ProductDAO.orderedProductsByPrice();
+								  Collections.reverse(products);
+								  System.out.println("here");
+								  break;
+				case "discount": products = ProductDAO.getProductsWithDiscount();
+								 System.out.println("here");
+								 break;
+				}
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			for(Product p: products) {
+				int code = p.getDiscountId();
+				float percent;
+				System.out.println(p.getPrice());
+				try {
+					percent = DiscountDAO.findDiscountByCode(code);
+					p.setDiscountId((int)percent);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			request.setAttribute("products", products);
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/listProductsView.jsp");
+
+			dispatcher.forward(request, response);
 		}
-
-		request.setAttribute("products", products);
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/listProductsView.jsp");
-
-		dispatcher.forward(request, response);
+		
+		if(request.getParameter("buy") != null) {
+			response.sendRedirect(request.getContextPath() + "/buy");
+		}
 
 	}
 

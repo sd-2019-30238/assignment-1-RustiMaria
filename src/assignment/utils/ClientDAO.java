@@ -10,6 +10,7 @@ import java.util.Map;
 import assignment.beans.Client;
 import assignment.beans.User;
 import assignment.configuration.SecurityConfiguration;
+import assignment.connection.ConnectionUtils;
 
 public class ClientDAO {
 
@@ -28,11 +29,18 @@ public class ClientDAO {
 
 	}
 	
-	public static Client findClient(Connection conn, int id) throws SQLException {
+	public static Client findClient(int id) throws SQLException {
 
 		String sql = "select c.firstName, c.lastName, c.address, c.email from client c " 
 				+ " where c.id = ?";
 
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setInt(1, id);
 		ResultSet rs = pstm.executeQuery();
@@ -49,10 +57,17 @@ public class ClientDAO {
 		return null;
 	}
 
-	public static void insertClient(Connection conn, Client client) throws SQLException {
+	public static void insertClient(Client client) throws SQLException {
 
 		String sql ="insert into client(id, firstName, lastName, address, email) values (?,?,?,?,?)";
 
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		pstm.setInt(1, client.getId());
 		pstm.setString(2, client.getFirstName());

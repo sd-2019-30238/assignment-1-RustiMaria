@@ -19,14 +19,9 @@ import assignment.utils.UserDAO;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	Connection connection;
 	
 	public LoginServlet() {
 		super();
-		try {
-			connection = ConnectionUtils.getConnection();
-		} catch(Exception e) {}
 	}
 
 	@Override
@@ -45,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 		User userAccount = null;
 		try {
 			System.out.println("1");
-			userAccount = UserDAO.findUser(connection, username, password);
+			userAccount = UserDAO.findUser(username, password);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -60,7 +55,7 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 
-		AppUtils.storeLogedInUser(request.getSession(), userAccount);
+		AppUtils.storeLoggedInUser(request.getSession(), userAccount);
 
 		int redirectId = -1;
 		try {

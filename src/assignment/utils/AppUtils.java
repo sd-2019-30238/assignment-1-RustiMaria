@@ -15,15 +15,15 @@ public class AppUtils {
 	private static final Map<String, Integer> uri_id_map = new HashMap<String, Integer>();
 
 	// Store user info in Session.
-	public static void storeLogedInUser(HttpSession session, User logedInUser) {
+	public static void storeLoggedInUser(HttpSession session, User loggedInUser) {
 		// On the JSP can access via ${logedInUser}
-		session.setAttribute("logedInUser", logedInUser);
+		session.setAttribute("loggedInUser", loggedInUser);
 	}
 
 	// Get the user information stored in the session.
-	public static User getLogedInUser(HttpSession session) {
-		User logedInUser = (User) session.getAttribute("logedInUser");
-		return logedInUser;
+	public static User getLoggedInUser(HttpSession session) {
+		User loggedInUser = (User) session.getAttribute("loggedInUser");
+		return loggedInUser;
 	}
 
 	public static int storeRedirectAfterLoginUrl(HttpSession session, String requestUri) {
