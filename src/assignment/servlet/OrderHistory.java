@@ -30,6 +30,8 @@ public class OrderHistory extends HttpServlet {
 
 	}
 
+	//list the orders for the current logged in user
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/orderHistory.jsp");

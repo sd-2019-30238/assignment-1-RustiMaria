@@ -42,14 +42,17 @@ public class CartServlet extends HttpServlet {
 
 @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
 	String idS = request.getParameter("id");
 	int id = Integer.parseInt(idS);
 	RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/cart.jsp");
 	User user = AppUtils.getLoggedInUser(request.getSession());
+	
 	if(user == null) {
 		dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginToBuy.jsp");
 		dispatcher.forward(request, response);
 	}
+	//store the products the logged in user puts in the shopping cart
 	try {
 		Product p = ProductDAO.findProduct(id);
 		int discountId = p.getDiscountId();

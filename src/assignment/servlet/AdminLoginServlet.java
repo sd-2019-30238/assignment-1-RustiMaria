@@ -40,12 +40,12 @@ public class AdminLoginServlet extends HttpServlet {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-
+		//wrong credentials or doesn't have authority
 		if (userAccount == null || userAccount.getRole().equals("USER")) {
 			String errorMessage = "Invalid admin credentials";
 			request.setAttribute("errorMessage", errorMessage);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/accessDeniedView.jsp");
-
+			
 			dispatcher.forward(request, response);
 			return;
 		}

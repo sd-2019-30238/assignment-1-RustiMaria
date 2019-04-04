@@ -21,8 +21,7 @@ public class UserInfoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		RequestDispatcher dispatcher //
-		= this.getServletContext().getRequestDispatcher("/WEB-INF/views/userInfoView.jsp");
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/userInfoView.jsp");
 
 		dispatcher.forward(request, response);
 	}

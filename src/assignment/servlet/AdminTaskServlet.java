@@ -22,6 +22,7 @@ public class AdminTaskServlet extends HttpServlet {
 
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/adminTaskView.jsp");
 
+		//get the action requested by the administrator and redirect to the corresponding page
 		if(request.getParameter("add") != null) {
 			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/addProduct.jsp");
 		}

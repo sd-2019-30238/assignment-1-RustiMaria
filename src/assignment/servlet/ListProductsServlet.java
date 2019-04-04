@@ -26,7 +26,7 @@ public class ListProductsServlet extends HttpServlet {
 		super();
 	}
 
-
+	//list all the products available at the moment
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -49,6 +49,7 @@ public class ListProductsServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
+	//apply filter option
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

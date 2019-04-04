@@ -35,6 +35,7 @@ public class RegisterServlet extends HttpServlet {
 		
 	}
 	
+	//store the registration data into the database
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -45,7 +46,7 @@ public class RegisterServlet extends HttpServlet {
 		String address = request.getParameter("address");
 		String email = request.getParameter("email");
 		
-		Client newClient = new Client(firstName, lastName, address, email);
+		Client newClient = new Client(firstName, lastName, email, address);
 		User newUser = new User(username, password, "USER");
 		
 		try {
@@ -58,8 +59,7 @@ public class RegisterServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		//AppUtils.storeLogedInUser(request.getSession(), newUser);
+
 	}
 	
 }

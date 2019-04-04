@@ -22,6 +22,7 @@ public class ProductManager extends HttpServlet {
 		super();
 	}	
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		RequestDispatcher dispatcher = null;
@@ -30,8 +31,9 @@ public class ProductManager extends HttpServlet {
 
 	}
 
+	//implement the tasks available for admin
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatcher = null;
 
 		if(request.getParameter("addProduct") != null) {
 			String name = request.getParameter("productName");
@@ -66,7 +68,8 @@ public class ProductManager extends HttpServlet {
 			try {
 				product = ProductDAO.findProduct(id);			
 				if(product==null) {
-					dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/invalidData.jsp");
+					RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/invalidData.jsp");
+					dispatcher.forward(request, response);
 				}
 				else {
 					if(field.equals("name")) {

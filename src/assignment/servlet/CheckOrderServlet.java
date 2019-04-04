@@ -27,20 +27,25 @@ public class CheckOrderServlet extends HttpServlet {
         super();
     }
     
+    @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.doPost(request, response);
 	}
 
+    //finalize the order and store it in the database
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		RequestDispatcher dispatcher;
 		User user = AppUtils.getLoggedInUser(request.getSession());
+		
 		try {
 			List<Product> products = user.getProducts();
 			float total = 0;
 			for(Product p: products) {
 				total += p.getPrice();
 			}
+			
 			Order order = new Order(user.getId(), total);
 			OrderDAO.insertOrder(order);
 			Order o = OrderDAO.findOrderByTotal(total);
@@ -48,12 +53,14 @@ public class CheckOrderServlet extends HttpServlet {
 				OrderInfo info = new OrderInfo(o.getId(), p.getId(), 1);
 				OrderInfoDAO.insertOrder(info);
 			}
+			
 			products.clear();
 			user.setProducts(products);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/orderSuccess.jsp");
 		dispatcher.forward(request, response);
 	}

@@ -22,7 +22,7 @@ public class ClientDAO {
 
 	private static void initUsers() {
 
-		// This user has a role as ADMIN.
+		// This user has the role of ADMIN.
 		User admin = new User(1, "admin", "admin", SecurityConfiguration.ROLE_ADMIN);
 
 		mapUsers.put(admin.getUsername(), admin);

@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		User userAccount = null;
+		
 		try {
 			userAccount = UserDAO.findUser(username, password);
 		} catch (SQLException e1) {
@@ -57,14 +58,13 @@ public class LoginServlet extends HttpServlet {
 		int redirectId = -1;
 		try {
 			redirectId = Integer.parseInt(request.getParameter("redirectId"));
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
+		
 		String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
+		
 		if (requestUri != null) {
 			response.sendRedirect(requestUri);
 		} else {
-			// Default after successful login
-			// redirect to /userInfo page
 			response.sendRedirect(request.getContextPath() + "/userInfo");
 		}
 
