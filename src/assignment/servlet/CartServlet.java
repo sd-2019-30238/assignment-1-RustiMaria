@@ -11,13 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import assignment.beans.Order;
-import assignment.beans.OrderInfo;
 import assignment.beans.Product;
 import assignment.beans.User;
 import assignment.utils.AppUtils;
 import assignment.utils.DiscountDAO;
-import assignment.utils.OrderDAO;
 import assignment.utils.ProductDAO;
 
 @WebServlet("/cart")

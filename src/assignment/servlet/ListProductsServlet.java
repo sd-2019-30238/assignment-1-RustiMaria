@@ -1,7 +1,6 @@
 package assignment.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,10 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.Product;
-import assignment.beans.factory.HolidayDiscount;
-import assignment.beans.factory.SeasonDiscount;
-import assignment.beans.factory.TenPercentDiscount;
-import assignment.connection.ConnectionUtils;
 import assignment.utils.DiscountDAO;
 import assignment.utils.ProductDAO;
 

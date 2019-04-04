@@ -1,7 +1,6 @@
 package assignment.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.Product;
-import assignment.connection.ConnectionUtils;
 import assignment.utils.DiscountDAO;
 import assignment.utils.ProductDAO;
 
