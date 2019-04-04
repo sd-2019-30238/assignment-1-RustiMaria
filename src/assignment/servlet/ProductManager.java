@@ -28,6 +28,7 @@ public class ProductManager extends HttpServlet {
 
 		RequestDispatcher dispatcher = null;
 		dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/adminTaskView.jsp");
+		dispatcher.forward(request, response);
 
 	}
 

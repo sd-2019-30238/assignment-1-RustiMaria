@@ -14,7 +14,7 @@
 		<table border="0">
 			<tr>
 				<td>The id of the product you want to update:</td>
-				<td><input type="text" name="idProduct"></td>
+				<td><input type="number" name="idProduct" min = '1' required></td>
 			</tr>
 			<tr>
 				<td>The field you want to update:</td>
@@ -27,7 +27,7 @@
 			</tr>
 				<tr>
 					<td>New value:</td>
-					<td><input type="text" name="newValue"></td>
+					<td><input type="text" name="newValue" required></td>
 				</tr>
 			<tr>
 				<td colspan="2"><input type="submit" name="updateProduct" value="Update">

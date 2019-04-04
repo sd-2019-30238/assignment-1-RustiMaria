@@ -14,7 +14,7 @@
 		<table border="0">
 			<tr>
 				<td>The id of the product you want to delete:</td>
-				<td><input type="text" name="idProduct"></td>
+				<td><input type="number" name="idProduct" min = '1' required></td>
 			</tr>
 			<tr>
 				<td colspan="2"><input type="submit" name="deleteProduct" value="Delete">

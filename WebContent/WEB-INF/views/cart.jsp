@@ -41,41 +41,28 @@ table#t01 th {
 <body style="background-color: LightGray;">
 	<jsp:include page="_menu.jsp"></jsp:include>
 	<form method="POST"
-		action="${pageContext.request.contextPath}/listProducts">
+		action="${pageContext.request.contextPath}/cart">
 		<br>
 		<table id="t01">
 			<tr>
 				<th>Name</th>
 				<th>Price ($)</th>
-				<th>Quantity</th>
-				<th>Discount (%)</th>
-				<th>Buy it</th>
 			</tr>
-			<c:forEach items="${products}" var="product">
+			<c:forEach items="${cart}" var="product">
 				<tr>
 					<td><c:out value="${product.name}"/></td>
 					<td><c:out value="${product.price}" /></td>
-					<td><c:out value="${product.quantity}" /></td>
-					<td><c:out value="${product.discountId}" /></td>
-					<td><a href="${pageContext.request.contextPath}/cart?id=${product.id}">Buy</a></td>
 				</tr>
 			</c:forEach>
 		</table>
+		
 		<br>
 		<br>
-		<table>
-			<tr>
-				<td>Filter by:</td>
-				<td><select name="type">
-						<option value="priceUp" selected>Ascendent Price</option>
-						<option value="priceDown">Descendent Price</option>
-						<option value="discount">With Discount</option>
-				</select></td>
-				<td colspan="2"><input type="submit" name="filter"
-					value="Filter"></td>
-			</tr>
-		</table>
-
+		
+		<a href="${pageContext.request.contextPath}/order">Buy</a>
+		
+		<br>
+		<br>
 	</form>
 
 </body>

@@ -42,6 +42,8 @@ body {
   <a href="${pageContext.request.contextPath}/admin"> Admin Login </a>
   <a href="${pageContext.request.contextPath}/logout"> Logout </a>
   <a href="${pageContext.request.contextPath}/register"> Register </a>
+  <a href="${pageContext.request.contextPath}/cart"> Cart </a>
+  <a href="${pageContext.request.contextPath}/orderHistory"> Order History </a>
 </div>
 
 </body>

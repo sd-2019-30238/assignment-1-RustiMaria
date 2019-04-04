@@ -5,7 +5,7 @@ public class Order {
 	private int id;
 	private int idClient;
 	private float total;
-	private String status;
+	private String orderStatus;
 	
 	public Order() {}
 
@@ -14,9 +14,24 @@ public class Order {
 		this.id = id;
 		this.idClient = idClient;
 		this.total = total;
-		this.status = "placed";
+		this.orderStatus = "placed";
 	}
 
+	public Order(int id, int idClient, float total, String status) {
+		super();
+		this.id = id;
+		this.idClient = idClient;
+		this.total = total;
+		this.orderStatus = status;
+	}
+	
+	public Order(int idClient, float total) {
+		super();
+		this.idClient = idClient;
+		this.total = total;
+		this.orderStatus = "placed";
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -39,6 +54,14 @@ public class Order {
 
 	public void setTotal(float total) {
 		this.total = total;
+	}
+
+	public String getStatus() {
+		return orderStatus;
+	}
+
+	public void setStatus(String status) {
+		this.orderStatus = status;
 	}
 	
 }

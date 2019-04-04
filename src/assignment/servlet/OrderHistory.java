@@ -1,6 +1,8 @@
 package assignment.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,35 +11,42 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import assignment.beans.Order;
 import assignment.beans.User;
 import assignment.utils.AppUtils;
+import assignment.utils.OrderDAO;
 
-@WebServlet("/buy")
-public class BuyProductServlet extends HttpServlet {
-
+@WebServlet("/orderHistory")
+public class OrderHistory extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public BuyProductServlet() {
+	public OrderHistory() {
 		super();
 	}
 
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/buyProduct.jsp");
+
+		this.doPost(request, response); 
+
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/orderHistory.jsp");
+
 		User user = AppUtils.getLoggedInUser(request.getSession());
 		if(user == null) {
 			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginToBuy.jsp");
 			dispatcher.forward(request, response);
 		}
-		System.out.println(user.getUsername());
+
+		try {
+			List<Order> orders = OrderDAO.queryOrdersByClientId(user.getId());
+			request.setAttribute("orders", orders);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		dispatcher.forward(request, response);
-		
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-	}
-	
 }

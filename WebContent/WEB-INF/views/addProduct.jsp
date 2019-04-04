@@ -19,13 +19,13 @@
 			</tr>
 			<tr>
 				<td>Price</td>
-				<td><input type="text" name="productPrice"
-					value="${product.price}" required /></td>
+				<td><input type="number" name="productPrice"
+					value="${product.price}" min = '0' required /></td>
 			</tr>
 			<tr>
 				<td>Quantity</td>
-				<td><input type="text" name="productQuantity"
-					value="${product.quantity}" required /></td>
+				<td><input type="number" name="productQuantity"
+					value="${product.quantity}" min = '1' required /></td>
 			</tr>
 			<tr>
 				<td>Discount</td>

@@ -61,7 +61,6 @@ public class ListProductsServlet extends HttpServlet {
 
 			List<Product> products = new ArrayList<Product>();
 			String type = request.getParameter("type");
-			System.out.println(type);
 			try {
 				switch(type) {
 				case "priceUp": products = ProductDAO.orderedProductsByPrice();
@@ -82,7 +81,6 @@ public class ListProductsServlet extends HttpServlet {
 			for(Product p: products) {
 				int code = p.getDiscountId();
 				float percent;
-				System.out.println(p.getPrice());
 				try {
 					percent = DiscountDAO.findDiscountByCode(code);
 					p.setDiscountId((int)percent);
@@ -95,10 +93,6 @@ public class ListProductsServlet extends HttpServlet {
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/listProductsView.jsp");
 
 			dispatcher.forward(request, response);
-		}
-		
-		if(request.getParameter("buy") != null) {
-			response.sendRedirect(request.getContextPath() + "/buy");
 		}
 
 	}

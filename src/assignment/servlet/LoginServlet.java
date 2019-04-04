@@ -39,7 +39,6 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		User userAccount = null;
 		try {
-			System.out.println("1");
 			userAccount = UserDAO.findUser(username, password);
 		} catch (SQLException e1) {
 			e1.printStackTrace();

@@ -23,17 +23,14 @@ public class AdminTaskServlet extends HttpServlet {
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/adminTaskView.jsp");
 
 		if(request.getParameter("add") != null) {
-			System.out.println("add");
 			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/addProduct.jsp");
 		}
 
 		if(request.getParameter("update") != null) {
-			System.out.println("update");
 			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/updateProduct.jsp");
 		}
 
 		if(request.getParameter("delete") != null) {
-			System.out.println("delete");
 			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/deleteProduct.jsp");
 		}
 

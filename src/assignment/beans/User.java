@@ -1,11 +1,16 @@
 package assignment.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
 	private int id;
 	private String username;
 	private String password;
 	private String role;
+	
+	private List<Product> products;
 	
 	public User() {}	
 
@@ -14,12 +19,14 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.role = role;
+		products = new ArrayList<Product>();
 	}
 
 	public User(String username, String password, String role) {
 		this.username = username;
 		this.password = password;
 		this.role = role;
+		products = new ArrayList<Product>();
 	}
 	
 	public int getId() {
@@ -52,6 +59,14 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 	
 }
