@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.Product;
-import assignment.utils.DiscountDAO;
-import assignment.utils.ProductDAO;
+import assignment.query.DiscountQuery;
+import assignment.query.ProductQuery;
 
 @WebServlet("/listProducts")
 public class ListProductsServlet extends HttpServlet {
@@ -33,10 +33,10 @@ public class ListProductsServlet extends HttpServlet {
 		List<Product> products = new ArrayList<Product>();
 
 		try {
-			products = ProductDAO.queryProduct();
+			products = ProductQuery.queryProduct();
 			for(Product p: products) {
 				int code = p.getDiscountId();
-				float percent = DiscountDAO.findDiscountByCode(code);
+				float percent = DiscountQuery.findDiscountByCode(code);
 				p.setDiscountId((int)percent);
 			}
 		} catch (SQLException e) {
@@ -59,14 +59,14 @@ public class ListProductsServlet extends HttpServlet {
 			String type = request.getParameter("type");
 			try {
 				switch(type) {
-				case "priceUp": products = ProductDAO.orderedProductsByPrice();
+				case "priceUp": products = ProductQuery.orderedProductsByPrice();
 								System.out.println("here");
 								break;
-				case "priceDown": products = ProductDAO.orderedProductsByPrice();
+				case "priceDown": products = ProductQuery.orderedProductsByPrice();
 								  Collections.reverse(products);
 								  System.out.println("here");
 								  break;
-				case "discount": products = ProductDAO.getProductsWithDiscount();
+				case "discount": products = ProductQuery.getProductsWithDiscount();
 								 System.out.println("here");
 								 break;
 				}
@@ -78,7 +78,7 @@ public class ListProductsServlet extends HttpServlet {
 				int code = p.getDiscountId();
 				float percent;
 				try {
-					percent = DiscountDAO.findDiscountByCode(code);
+					percent = DiscountQuery.findDiscountByCode(code);
 					p.setDiscountId((int)percent);
 				} catch (SQLException e) {
 					e.printStackTrace();

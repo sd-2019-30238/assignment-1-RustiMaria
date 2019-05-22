@@ -13,15 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.Client;
 import assignment.beans.User;
+import assignment.command.ICommand;
+import assignment.command.InsertUserCommand;
+import assignment.command.RegisterClientCommand;
 import assignment.connection.ConnectionUtils;
+import assignment.mediator.Mediator;
+import assignment.query.UserQuery;
 import assignment.utils.AppUtils;
-import assignment.utils.ClientDAO;
-import assignment.utils.UserDAO;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private Mediator mediator = new Mediator();
 	
 	public RegisterServlet() {
 		super();
@@ -50,10 +54,12 @@ public class RegisterServlet extends HttpServlet {
 		User newUser = new User(username, password, "USER");
 		
 		try {
-			UserDAO.insertUser(newUser);
-			User user = UserDAO.findUser(newUser.getUsername(), newUser.getPassword());
+			ICommand command = new InsertUserCommand(newUser);
+			mediator.mediate(command);
+			User user = UserQuery.findUser(newUser.getUsername(), newUser.getPassword());
 			newClient.setId(user.getId());
-			ClientDAO.insertClient(newClient);
+			ICommand command1 = new RegisterClientCommand(newClient);
+			mediator.mediate(command1);
 			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/registerSuccess.jsp");
 			dispatcher.forward(request, response);
 		} catch (SQLException e) {

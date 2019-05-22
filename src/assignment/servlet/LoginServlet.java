@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.User;
+import assignment.query.UserQuery;
 import assignment.utils.AppUtils;
-import assignment.utils.UserDAO;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 		User userAccount = null;
 		
 		try {
-			userAccount = UserDAO.findUser(username, password);
+			userAccount = UserQuery.findUser(username, password);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

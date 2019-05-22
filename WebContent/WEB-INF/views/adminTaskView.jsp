@@ -25,6 +25,7 @@
 	<input type="submit" name="add" value="Add Product">
 	<input type="submit" name="update" value="Update Product">
 	<input type="submit" name="delete" value="Delete Product">
+	<input type="submit" name="orderStatus" value="Update Order Statuses">
 	
 	</form>
 

@@ -100,6 +100,31 @@ public class OrderDAO {
 		return null;
 	}
 	
+	public static Order findOrderById(int id) throws SQLException {
+		String sql = "select idClient, total, orderStatus from orders where id=?";
+
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		PreparedStatement pstm = conn.prepareStatement(sql);
+
+		pstm.setInt(1, id);
+
+		ResultSet rs = pstm.executeQuery();
+		while (rs.next()) {
+			int idClient = rs.getInt("idClient");
+			Float total = rs.getFloat("total");
+			String status = rs.getString("orderStatus");
+			return new Order(id, idClient, total, status);
+		}
+		conn.close();
+		return null;
+	}
+	
 	public static Order findOrderByTotal(float total) throws SQLException {
 		String sql = "select id, idClient, orderStatus from orders where total < ? + 0.01 and total > ? - 0.01";
 
@@ -124,6 +149,25 @@ public class OrderDAO {
 		}
 		conn.close();
 		return null;
+	}
+	
+	public static void updateStatus(int id, String status) throws SQLException {
+		String sql = "update orders set orderStatus=? where id=?";
+
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		PreparedStatement pstm = conn.prepareStatement(sql);
+
+		pstm.setString(1, status);
+		pstm.setInt(2, id);
+
+		pstm.executeUpdate();
+		conn.close();
 	}
 	
 }

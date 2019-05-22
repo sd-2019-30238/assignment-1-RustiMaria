@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.Order;
 import assignment.beans.User;
+import assignment.query.OrderQuery;
 import assignment.utils.AppUtils;
-import assignment.utils.OrderDAO;
 
 @WebServlet("/orderHistory")
 public class OrderHistory extends HttpServlet {
@@ -43,7 +43,7 @@ public class OrderHistory extends HttpServlet {
 		}
 
 		try {
-			List<Order> orders = OrderDAO.queryOrdersByClientId(user.getId());
+			List<Order> orders = OrderQuery.queryOrdersByClientId(user.getId());
 			request.setAttribute("orders", orders);
 		} catch (SQLException e) {
 			e.printStackTrace();

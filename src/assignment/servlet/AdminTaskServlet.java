@@ -35,6 +35,11 @@ public class AdminTaskServlet extends HttpServlet {
 			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/deleteProduct.jsp");
 		}
 
+		if(request.getParameter("orderStatus") != null) {
+			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/updateOrderStatus.jsp");
+		}
+
+		
 		dispatcher.forward(request, response);
 	}
 

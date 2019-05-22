@@ -69,6 +69,31 @@ public class UserDAO {
 		return null;
 	}
 	
+	public static User findUserById(int id) throws SQLException {
+
+		String sql ="select u.username, u.password from user u where u.id = ?";
+
+		Connection conn = null;
+		try {
+			conn = ConnectionUtils.getConnection();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		PreparedStatement pstm = conn.prepareStatement(sql);
+		pstm.setInt(1, id);
+
+		ResultSet rs = pstm.executeQuery();
+
+		if (rs.next()) {
+			String username = rs.getString("username");
+			String password = rs.getString("password");
+			User user = new User(id, username, password, "");
+			return user;
+		}
+		return null;
+	}
+	
 	public static void insertUser(User user) throws SQLException {
 
 		String sql ="insert into user(username, password, role) values (?,?,\"USER\")";

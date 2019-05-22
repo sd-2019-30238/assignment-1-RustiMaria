@@ -15,13 +15,21 @@ import assignment.beans.Order;
 import assignment.beans.OrderInfo;
 import assignment.beans.Product;
 import assignment.beans.User;
+import assignment.command.ICommand;
+import assignment.command.InsertOrderCommand;
+import assignment.command.InsertOrderInfoCommand;
+import assignment.decorator.IShoppingCart;
+import assignment.decorator.ManyProductsDecorator;
+import assignment.decorator.ShoppingCart;
+import assignment.mediator.IMediator;
+import assignment.mediator.Mediator;
+import assignment.query.OrderQuery;
 import assignment.utils.AppUtils;
-import assignment.utils.OrderDAO;
-import assignment.utils.OrderInfoDAO;
 
 @WebServlet("/order")
 public class CheckOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private IMediator mediator = new Mediator();
 
     public CheckOrderServlet() {
         super();
@@ -36,8 +44,9 @@ public class CheckOrderServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		RequestDispatcher dispatcher;
+		RequestDispatcher dispatcher = null;
 		User user = AppUtils.getLoggedInUser(request.getSession());
+		boolean decoratorApplied = false;
 		
 		try {
 			List<Product> products = user.getProducts();
@@ -46,12 +55,22 @@ public class CheckOrderServlet extends HttpServlet {
 				total += p.getPrice();
 			}
 			
+			if(products.size() >= 3) {
+				IShoppingCart cart = new ShoppingCart(products);
+				IShoppingCart newCart = new ManyProductsDecorator(cart);
+				total = newCart.getTotal();
+				decoratorApplied = true;
+			}
+			
 			Order order = new Order(user.getId(), total);
-			OrderDAO.insertOrder(order);
-			Order o = OrderDAO.findOrderByTotal(total);
+			ICommand command = new InsertOrderCommand(order);
+			mediator.mediate(command);
+			Order o = OrderQuery.findOrderByTotal(total);
+			//System.out.println("Registered");
 			for(Product p: products) {
 				OrderInfo info = new OrderInfo(o.getId(), p.getId(), 1);
-				OrderInfoDAO.insertOrder(info);
+				ICommand command1 = new InsertOrderInfoCommand(info);
+				mediator.mediate(command1);
 			}
 			
 			products.clear();
@@ -61,7 +80,13 @@ public class CheckOrderServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/orderSuccess.jsp");
+		if(decoratorApplied == false) {
+			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/orderSuccess.jsp");
+		}
+		else {
+			dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/manyProductsDecorated.jsp");
+		}
+		
 		dispatcher.forward(request, response);
 	}
 

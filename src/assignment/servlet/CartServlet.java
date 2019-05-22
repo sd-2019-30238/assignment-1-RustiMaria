@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import assignment.beans.Product;
 import assignment.beans.User;
+import assignment.query.DiscountQuery;
+import assignment.query.ProductQuery;
 import assignment.utils.AppUtils;
-import assignment.utils.DiscountDAO;
-import assignment.utils.ProductDAO;
 
 @WebServlet("/cart")
 public class CartServlet extends HttpServlet {
@@ -54,13 +54,14 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 	}
 	//store the products the logged in user puts in the shopping cart
 	try {
-		Product p = ProductDAO.findProduct(id);
+		Product p = ProductQuery.findProduct(id);
 		int discountId = p.getDiscountId();
-		float discount = DiscountDAO.findDiscountByCode(discountId);
+		float discount = DiscountQuery.findDiscountByCode(discountId);
 		discount /= 100;
 		float price = p.getPrice();
 		float finalPrice = price - discount * price;
 		p.setPrice(finalPrice);
+		
 		List<Product> cart = user.getProducts();
 		cart.add(p);
 		user.setProducts(cart);

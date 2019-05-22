@@ -10,13 +10,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import assignment.beans.Order;
 import assignment.beans.Product;
-import assignment.utils.DiscountDAO;
-import assignment.utils.ProductDAO;
+import assignment.beans.User;
+import assignment.command.DeleteProductCommand;
+import assignment.command.ICommand;
+import assignment.command.InsertProductCommand;
+import assignment.command.UpdateOrderStatusCommand;
+import assignment.command.UpdateProductCommand;
+import assignment.mediator.Mediator;
+import assignment.query.DiscountQuery;
+import assignment.query.OrderQuery;
+import assignment.query.ProductQuery;
+import assignment.query.UserQuery;
 
 @WebServlet("/tasks")
 public class ProductManager extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Mediator mediator = new Mediator();
 
 	public ProductManager() {
 		super();
@@ -46,10 +57,11 @@ public class ProductManager extends HttpServlet {
 			int code = 0;
 			try {
 				if(!discount.equals("none")){
-					code = DiscountDAO.getCodeByType(discount);
+					code = DiscountQuery.getCodeByType(discount);
 				}
 				Product product = new Product(name, price, quantity, code);
-				ProductDAO.insertProduct(product);
+				ICommand command = new InsertProductCommand(product);	
+				mediator.mediate(command);
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -66,7 +78,7 @@ public class ProductManager extends HttpServlet {
 			Product product = null;
 
 			try {
-				product = ProductDAO.findProduct(id);			
+				product = ProductQuery.findProduct(id);			
 				if(product==null) {
 					RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/invalidData.jsp");
 					dispatcher.forward(request, response);
@@ -87,7 +99,8 @@ public class ProductManager extends HttpServlet {
 						int discount = Integer.parseInt(newValue);
 						product.setDiscountId(discount);
 					}
-					ProductDAO.updateProduct(product);
+					ICommand command1 = new UpdateProductCommand(product);
+					mediator.mediate(command1);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -99,7 +112,26 @@ public class ProductManager extends HttpServlet {
 
 			try {
 				int id = Integer.parseInt(idS);
-				ProductDAO.deleteProduct(id);
+				ICommand command2 = new DeleteProductCommand(id);
+				mediator.mediate(command2);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
+		}
+		
+		if(request.getParameter("orderStatus") != null) {
+			String idS = request.getParameter("idOrder");
+			String status = request.getParameter("status");
+			try {
+				int id = Integer.parseInt(idS);	
+				Order order = OrderQuery.findOrderById(id);
+				int clientId = order.getIdClient();
+				User user = UserQuery.findUserById(clientId);
+				user.addOrder(order);
+				order.registerObserver(user);
+				order.setStatus(status);
+				ICommand command3 = new UpdateOrderStatusCommand(id, status);
+				mediator.mediate(command3);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}	
